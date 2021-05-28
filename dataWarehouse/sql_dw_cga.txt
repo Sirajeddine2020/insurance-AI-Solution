@@ -1,0 +1,648 @@
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_Assure]    Script Date: 3/5/2021 9:09:21 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_Assure](
+	[CodeAssure_id] [int] NOT NULL,
+	[codeTypePieceIdentite] [int] NOT NULL,
+	[codePostal] [int] NULL,
+ CONSTRAINT [PK_Dim_Assure] PRIMARY KEY CLUSTERED 
+(
+	[CodeAssure_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+**************************************************************************
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_ClassesBonusMalus]    Script Date: 3/5/2021 9:10:23 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_ClassesBonusMalus](
+	[CodeBonusMalus_id] [int] NOT NULL,
+	[CodePolice_id] [int] NULL,
+	[CodeVehicule_id] [int] NULL,
+	[CodeAssure_id] [int] NULL,
+	[CodeSouscripteur_id] [int] NULL,
+	[codeUsage] [int] NULL,
+	[ETAT_VEHICULE] [nvarchar](2) NULL,
+	[DATE_AFFECTATION] [int] NULL,
+	[classeBonusMalus] [int] NULL,
+	[classeBonusMalusCompagnie] [int] NULL,
+	[coefBonusMalus] [int] NULL,
+ CONSTRAINT [PK_Dim_ClassesBonusMalus] PRIMARY KEY CLUSTERED 
+(
+	[CodeBonusMalus_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Assure] FOREIGN KEY([CodeAssure_id])
+REFERENCES [dbo].[Dim_Assure] ([CodeAssure_id])
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus] CHECK CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Assure]
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Date] FOREIGN KEY([CodeBonusMalus_id])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus] CHECK CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Date]
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Date1] FOREIGN KEY([DATE_AFFECTATION])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus] CHECK CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Date1]
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Police] FOREIGN KEY([CodePolice_id])
+REFERENCES [dbo].[Dim_Police] ([CodePolice_id])
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus] CHECK CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Police]
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Souscripteur] FOREIGN KEY([CodeSouscripteur_id])
+REFERENCES [dbo].[Dim_Souscripteur] ([CodeSouscripteur_id])
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus] CHECK CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Souscripteur]
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Vehicule] FOREIGN KEY([CodeVehicule_id])
+REFERENCES [dbo].[Dim_Vehicule] ([CodeVehicule_id])
+GO
+
+ALTER TABLE [dbo].[Dim_ClassesBonusMalus] CHECK CONSTRAINT [FK_Dim_ClassesBonusMalus_Dim_Vehicule]
+GO
+
+
+*******************************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_Compagnies]    Script Date: 3/5/2021 9:10:43 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_Compagnies](
+	[CODE_COMPAGNIE_id] [int] NOT NULL,
+	[CODE_COMPAGNIE] [nvarchar](2) NULL,
+ CONSTRAINT [PK_Dim_Compagnies] PRIMARY KEY CLUSTERED 
+(
+	[CODE_COMPAGNIE_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+*********************************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_Date]    Script Date: 3/5/2021 9:11:03 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_Date](
+	[id_date] [int] NOT NULL,
+	[annee] [int] NULL,
+	[mois] [int] NULL,
+	[jour] [int] NULL,
+	[heure] [int] NULL,
+	[min] [int] NULL,
+	[sec] [int] NULL,
+ CONSTRAINT [PK_Dim_Date] PRIMARY KEY CLUSTERED 
+(
+	[id_date] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+**************************************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_Police]    Script Date: 3/5/2021 9:11:22 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_Police](
+	[CodePolice_id] [int] NOT NULL,
+	[codeCompagnie_id] [int] NULL,
+	[codeAgence] [nvarchar](6) NULL,
+	[typeIntermediaire] [nvarchar](6) NULL,
+	[numPolice] [nvarchar](20) NULL,
+	[naturePolice] [nvarchar](1) NULL,
+	[typePolice] [nvarchar](1) NULL,
+	[Etat_Police] [nvarchar](6) NULL,
+	[dateEffetPolice] [int] NULL,
+	[code_Courtier_CGA] [nvarchar](1) NULL,
+	[dateExpirationPolice] [int] NULL,
+	[verouillageModifPolice] [bit] NULL,
+	[DATE_RESILIATION] [int] NULL,
+	[Date_Suspenssion] [int] NULL,
+	[dateRemiseEnVigueure] [int] NULL,
+	[dateEcheancePolice] [int] NULL,
+ CONSTRAINT [PK_Dim_Police] PRIMARY KEY CLUSTERED 
+(
+	[CodePolice_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [IX_Dim_Police] UNIQUE NONCLUSTERED 
+(
+	[numPolice] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Dim_Police]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Police_Dim_Date3] FOREIGN KEY([dateEffetPolice])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Police] CHECK CONSTRAINT [FK_Dim_Police_Dim_Date3]
+GO
+
+ALTER TABLE [dbo].[Dim_Police]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Police_Dim_Date4] FOREIGN KEY([dateExpirationPolice])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Police] CHECK CONSTRAINT [FK_Dim_Police_Dim_Date4]
+GO
+
+ALTER TABLE [dbo].[Dim_Police]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Police_Dim_Date5] FOREIGN KEY([DATE_RESILIATION])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Police] CHECK CONSTRAINT [FK_Dim_Police_Dim_Date5]
+GO
+
+ALTER TABLE [dbo].[Dim_Police]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Police_Dim_Date6] FOREIGN KEY([Date_Suspenssion])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Police] CHECK CONSTRAINT [FK_Dim_Police_Dim_Date6]
+GO
+
+ALTER TABLE [dbo].[Dim_Police]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Police_Dim_Date7] FOREIGN KEY([dateRemiseEnVigueure])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Police] CHECK CONSTRAINT [FK_Dim_Police_Dim_Date7]
+GO
+
+ALTER TABLE [dbo].[Dim_Police]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Police_Dim_Date8] FOREIGN KEY([dateEcheancePolice])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Police] CHECK CONSTRAINT [FK_Dim_Police_Dim_Date8]
+GO
+
+ALTER TABLE [dbo].[Dim_Police]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Police_Dim_Police] FOREIGN KEY([codeCompagnie_id])
+REFERENCES [dbo].[Dim_Compagnies] ([CODE_COMPAGNIE_id])
+GO
+
+ALTER TABLE [dbo].[Dim_Police] CHECK CONSTRAINT [FK_Dim_Police_Dim_Police]
+GO
+
+
+****************************************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_Sinistres]    Script Date: 3/5/2021 9:11:44 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_Sinistres](
+	[CodeSinistre_id] [int] NOT NULL,
+	[CodePolice_id] [int] NULL,
+	[CodeVehicule_id] [int] NULL,
+	[CodeAssure_id] [int] NULL,
+	[dateOuvertureDuSinistre] [int] NULL,
+	[lieuDuSinistre] [nvarchar](30) NULL,
+	[pourcentadeDeResponsabilite] [int] NULL,
+	[natureDuSinistre] [nvarchar](1) NULL,
+	[Calculer_Sinistre] [bit] NULL,
+	[numeroDuSinistre] [nvarchar](30) NULL,
+	[dateDeSurvenanceDuSinistre] [int] NULL,
+	[identificationTiers] [nvarchar](20) NULL,
+	[numeroDePoliceCompagnieAdverse] [nvarchar](20) NULL,
+	[codeCompagnieAdverse_id] [int] NULL,
+	[porcentageCompagnieAdverse] [int] NULL,
+	[numeroImmatriculationVehiculeAdverse] [nvarchar](30) NULL,
+	[mouvementDusinistre] [int] NULL,
+ CONSTRAINT [PK_Dim_Sinistres] PRIMARY KEY CLUSTERED 
+(
+	[CodeSinistre_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Assure] FOREIGN KEY([CodeAssure_id])
+REFERENCES [dbo].[Dim_Assure] ([CodeAssure_id])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Assure]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Compagnies] FOREIGN KEY([codeCompagnieAdverse_id])
+REFERENCES [dbo].[Dim_Compagnies] ([CODE_COMPAGNIE_id])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Compagnies]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Date] FOREIGN KEY([dateDeSurvenanceDuSinistre])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Date]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Date1] FOREIGN KEY([dateOuvertureDuSinistre])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Date1]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Police] FOREIGN KEY([CodePolice_id])
+REFERENCES [dbo].[Dim_Police] ([CodePolice_id])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Police]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Police1] FOREIGN KEY([numeroDePoliceCompagnieAdverse])
+REFERENCES [dbo].[Dim_Police] ([numPolice])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Police1]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Vehicule] FOREIGN KEY([CodeVehicule_id])
+REFERENCES [dbo].[Dim_Vehicule] ([CodeVehicule_id])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Vehicule]
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Sinistres_Dim_Vehicule1] FOREIGN KEY([numeroImmatriculationVehiculeAdverse])
+REFERENCES [dbo].[Dim_Vehicule] ([numImmatriculation])
+GO
+
+ALTER TABLE [dbo].[Dim_Sinistres] CHECK CONSTRAINT [FK_Dim_Sinistres_Dim_Vehicule1]
+GO
+
+
+**************************************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_Souscripteur]    Script Date: 3/5/2021 9:12:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_Souscripteur](
+	[CodeSouscripteur_id] [int] NOT NULL,
+ CONSTRAINT [PK_Dim_Souscripteur] PRIMARY KEY CLUSTERED 
+(
+	[CodeSouscripteur_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+********************************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Dim_Vehicule]    Script Date: 3/5/2021 9:12:16 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dim_Vehicule](
+	[CodeVehicule_id] [int] NOT NULL,
+	[puissanceFiscal] [int] NULL,
+	[typeImmatriculation] [nvarchar](4) NULL,
+	[energie] [nvarchar](20) NULL,
+	[dateInsertion] [int] NULL,
+	[Marque] [nvarchar](255) NULL,
+	[numChassis] [nvarchar](255) NULL,
+	[numImmatriculation] [nvarchar](30) NOT NULL,
+	[dateDerniereVisite] [int] NULL,
+	[dateAjout] [int] NULL,
+	[etatVehicule] [nvarchar](4) NULL,
+	[dateMiseEpave] [int] NULL,
+	[DATE_RETRAIT] [int] NULL,
+	[dateMiseCirculation] [int] NULL,
+	[dateMiseAjourVehicule] [int] NULL,
+ CONSTRAINT [PK_Dim_Vehicule] PRIMARY KEY CLUSTERED 
+(
+	[CodeVehicule_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [IX_Dim_Vehicule] UNIQUE NONCLUSTERED 
+(
+	[numImmatriculation] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Vehicule_Dim_Date] FOREIGN KEY([dateInsertion])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule] CHECK CONSTRAINT [FK_Dim_Vehicule_Dim_Date]
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Vehicule_Dim_Date1] FOREIGN KEY([dateDerniereVisite])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule] CHECK CONSTRAINT [FK_Dim_Vehicule_Dim_Date1]
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Vehicule_Dim_Date2] FOREIGN KEY([dateAjout])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule] CHECK CONSTRAINT [FK_Dim_Vehicule_Dim_Date2]
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Vehicule_Dim_Date3] FOREIGN KEY([dateMiseEpave])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule] CHECK CONSTRAINT [FK_Dim_Vehicule_Dim_Date3]
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Vehicule_Dim_Date4] FOREIGN KEY([DATE_RETRAIT])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule] CHECK CONSTRAINT [FK_Dim_Vehicule_Dim_Date4]
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Vehicule_Dim_Date5] FOREIGN KEY([dateMiseCirculation])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule] CHECK CONSTRAINT [FK_Dim_Vehicule_Dim_Date5]
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule]  WITH CHECK ADD  CONSTRAINT [FK_Dim_Vehicule_Dim_Date6] FOREIGN KEY([dateMiseAjourVehicule])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Dim_Vehicule] CHECK CONSTRAINT [FK_Dim_Vehicule_Dim_Date6]
+GO
+
+
+************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Fait_ClassesBonusMalus]    Script Date: 3/5/2021 9:12:29 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Fait_ClassesBonusMalus](
+	[CodePolice_id] [int] NULL,
+	[CodeVehicule_id] [int] NULL,
+	[CodeAssure_id] [int] NULL,
+	[CodeSouscripteur_id] [int] NULL,
+	[UsageVehicule] [nvarchar](255) NULL,
+	[ETAT_VEHICULE] [nvarchar](2) NULL,
+	[DATE_AFFECTATION] [int] NULL,
+	[classeBonusMalus] [int] NULL,
+	[classeBonusMalusCompagnie] [int] NULL,
+	[coefBonusMalus] [int] NULL,
+	[fk_date] [int] NULL,
+	[code_compagnie_id] [int] NULL,
+	[CodeSinistre_id] [int] NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Assure] FOREIGN KEY([CodeAssure_id])
+REFERENCES [dbo].[Dim_Assure] ([CodeAssure_id])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Assure]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Compagnies] FOREIGN KEY([code_compagnie_id])
+REFERENCES [dbo].[Dim_Compagnies] ([CODE_COMPAGNIE_id])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Compagnies]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Date] FOREIGN KEY([fk_date])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Date]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Date1] FOREIGN KEY([DATE_AFFECTATION])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Date1]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Police] FOREIGN KEY([CodePolice_id])
+REFERENCES [dbo].[Dim_Police] ([CodePolice_id])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Police]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Sinistres] FOREIGN KEY([CodeSinistre_id])
+REFERENCES [dbo].[Dim_Sinistres] ([CodeSinistre_id])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Sinistres]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Souscripteur] FOREIGN KEY([CodeSouscripteur_id])
+REFERENCES [dbo].[Dim_Souscripteur] ([CodeSouscripteur_id])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Souscripteur]
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus]  WITH CHECK ADD  CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Vehicule] FOREIGN KEY([CodeVehicule_id])
+REFERENCES [dbo].[Dim_Vehicule] ([CodeVehicule_id])
+GO
+
+ALTER TABLE [dbo].[Fait_ClassesBonusMalus] CHECK CONSTRAINT [FK_Fait_ClassesBonusMalus_Dim_Vehicule]
+GO
+
+
+*****************************************************************************
+
+USE [DW_CGA]
+GO
+
+/****** Object:  Table [dbo].[Fait_Sinistres]    Script Date: 3/5/2021 9:12:41 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Fait_Sinistres](
+	[CodePolice_id] [int] NULL,
+	[CodeVehicule_id] [int] NULL,
+	[CodeAssure_id] [int] NULL,
+	[dateOuvertureDuSinistre] [int] NULL,
+	[lieuDuSinistre] [nvarchar](30) NULL,
+	[pourcentadeDeResponsabilite] [int] NULL,
+	[natureDuSinistre] [nvarchar](1) NULL,
+	[Calculer_Sinistre] [bit] NULL,
+	[numeroDuSinistre] [nvarchar](30) NULL,
+	[dateDeSurvenanceDuSinistre] [int] NULL,
+	[identificationTiers] [nvarchar](20) NULL,
+	[numeroDePoliceCompagnieAdverse] [nvarchar](20) NULL,
+	[codeCompagnieAdverse_id] [int] NULL,
+	[pourcentageCompagnieAdverse] [int] NULL,
+	[numeroImmatriculationVehiculeAdverse] [nvarchar](30) NULL,
+	[mouvementDusinistre] [int] NULL,
+	[fk_date] [int] NULL,
+	[CodeBonusMalus_id] [int] NULL,
+	[CODE_COMPAGNIE_id] [int] NULL,
+	[CodeSouscripteur_id] [int] NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Assure] FOREIGN KEY([CodeAssure_id])
+REFERENCES [dbo].[Dim_Assure] ([CodeAssure_id])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Assure]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_ClassesBonusMalus] FOREIGN KEY([CodeBonusMalus_id])
+REFERENCES [dbo].[Dim_ClassesBonusMalus] ([CodeBonusMalus_id])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_ClassesBonusMalus]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Compagnies] FOREIGN KEY([codeCompagnieAdverse_id])
+REFERENCES [dbo].[Dim_Compagnies] ([CODE_COMPAGNIE_id])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Compagnies]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Compagnies1] FOREIGN KEY([CODE_COMPAGNIE_id])
+REFERENCES [dbo].[Dim_Compagnies] ([CODE_COMPAGNIE_id])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Compagnies1]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Date] FOREIGN KEY([dateDeSurvenanceDuSinistre])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Date]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Date1] FOREIGN KEY([dateOuvertureDuSinistre])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Date1]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Date2] FOREIGN KEY([fk_date])
+REFERENCES [dbo].[Dim_Date] ([id_date])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Date2]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Police] FOREIGN KEY([CodePolice_id])
+REFERENCES [dbo].[Dim_Police] ([CodePolice_id])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Police]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Police1] FOREIGN KEY([numeroDePoliceCompagnieAdverse])
+REFERENCES [dbo].[Dim_Police] ([numPolice])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Police1]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Souscripteur] FOREIGN KEY([CodeSouscripteur_id])
+REFERENCES [dbo].[Dim_Souscripteur] ([CodeSouscripteur_id])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Souscripteur]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Dim_Vehicule] FOREIGN KEY([CodeVehicule_id])
+REFERENCES [dbo].[Dim_Vehicule] ([CodeVehicule_id])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Dim_Vehicule]
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres]  WITH CHECK ADD  CONSTRAINT [FK_Fait_Sinistres_Fait_Sinistres] FOREIGN KEY([numeroImmatriculationVehiculeAdverse])
+REFERENCES [dbo].[Dim_Vehicule] ([numImmatriculation])
+GO
+
+ALTER TABLE [dbo].[Fait_Sinistres] CHECK CONSTRAINT [FK_Fait_Sinistres_Fait_Sinistres]
+GO
+
+
